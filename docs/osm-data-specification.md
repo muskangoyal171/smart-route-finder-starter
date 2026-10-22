@@ -50,6 +50,9 @@ A way is accepted into the walking graph if its `highway` tag matches any of the
 | `service` | Shared Access | Internal campus driveways, delivery alleys, and shared vehicle-pedestrian service roads. |
 | `residential` | Shared Access | Internal access roads servicing hostel complexes and staff quarters. |
 | `living_street` | Shared Access | Low-speed shared-use streets prioritizing pedestrians. |
+| `crossing` | Pedestrian Crossing | Zebra crossings and pedestrian links connecting paths across campus roads. |
+| `unclassified` | Campus Road | Internal campus access roads connecting faculties and hostels. |
+| `track` | Unpaved Track | Minor service tracks and unpaved pathways linking outer sports areas. |
 
 ### 3.2 Explicit Exclusions and Access Denylist
 A way is **rejected** if any of the following conditions are met:
@@ -84,16 +87,17 @@ Destinations frequently exist as independent POI nodes or building polygons whos
 flowchart TD
     D[Select Destination] --> E{Has mapped entrance on path?}
     E -- Yes --> V1[Snap directly to entrance node vertex]
-    E -- No --> C{Distance to nearest graph vertex <= 35m?}
-    C -- Yes --> V2[Connect destination to nearest graph vertex]
+    E -- No --> C{Distance to nearest graph vertex <= 50m?}
+    C -- Yes --> V2[Connect destination prioritizing main component vertices]
     C -- No --> U[Mark destination as UNCONNECTED / NOT_REACHABLE]
 ```
 
 1. **Priority 1 (Mapped Entrance):** If an entrance node (`node["entrance"]`) exists for the building and lies on an eligible path, snap directly to that vertex.
-2. **Priority 2 (Threshold Snapping):** If no entrance is mapped on the path, calculate the Haversine distance from the POI coordinate to every vertex in the walkable graph.
-   * **Maximum Snapping Threshold:** **`35.0 metres`** (`destination.max_snap_distance_meters`).
-   * If `min_distance <= 35.0m`, link the destination to that closest graph vertex.
-3. **Priority 3 (Honest Disconnection):** If `min_distance > 35.0m`, the destination is marked `UNCONNECTED`. The UI must notify the user that no safe, mapped walking path connects to this destination. **Never fabricate shortcuts across unmapped buildings or grounds.**
+2. **Priority 2 (Main Component Priority Snapping):** If no entrance is mapped on the path, calculate the Haversine distance from the POI coordinate to every vertex in the walkable graph.
+   * **Maximum Snapping Threshold:** **`50.0 metres`** (`destination.max_snap_distance_meters`).
+   * When finding the nearest candidate vertex within 50.0m, prioritize vertices that belong to the main campus connected component (containing over 1,300 vertices). This ensures paths connect to the primary campus spine rather than isolated decorative micro-islands.
+   * If `min_distance <= 50.0m`, link the destination to that closest graph vertex.
+3. **Priority 3 (Honest Disconnection):** If `min_distance > 50.0m`, the destination is marked `UNCONNECTED`. The UI notifies the user that no safe, mapped walking path connects to this destination. **Never fabricate shortcuts across unmapped buildings or grounds.**
 
 ---
 

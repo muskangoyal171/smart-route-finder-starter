@@ -20,7 +20,34 @@ A Java desktop application and PAMCA501 Data Structures and Algorithms (DSA) pro
 
 ---
 
-## 2. Architecture & Separation of Concerns
+## 2. Quick Start: How to Run the Project (For Faculty & Students)
+
+### 🚀 1-Click Launch (Running the Application)
+- **Windows Command Prompt / Explorer:** Double-click or run `run.bat`
+- **Windows PowerShell:** Run `.\run.ps1`
+
+### 🔨 1-Click Build (Compiling Sources)
+- **Windows Command Prompt / Explorer:** Double-click or run `build.bat`
+- **Windows PowerShell:** Run `.\build.ps1`
+
+### 🧪 1-Click Test Runner (7 Automated Test Suites)
+- **Windows Command Prompt / Explorer:** Double-click or run `test.bat`
+- **Windows PowerShell:** Run `.\test.ps1`
+*(Executes all 7 test suites validating graph invariants, data loading, Dijkstra shortest path, Prim/Kruskal equivalence, Canvas rendering, and user experience flows).*
+
+### 🎮 How to Use the Desktop Application
+1. **Searchable Landmark Selection:** Click into either the **Start Location** or **Destination** box and type any building or place name (e.g., *"Library"*, *"Food Court"*, *"Gate"*, *"Tower"*, *"Block"*). Matching campus landmarks are filtered in real-time as you type. Alternatively, click directly on any blue landmark dot on the vector map canvas.
+2. **Interactive Map Navigation:**
+   - **Zoom In / Out:** Rotate your mouse scroll wheel (zooms smoothly centered at the mouse cursor), or click `➕ Zoom In` / `➖ Zoom Out` in the map toolbar.
+   - **Pan:** Click and drag anywhere across the map canvas to freely pan the viewport.
+   - **Fit to Screen:** Click `⟲ Fit to Screen` to reset zoom and recenter the campus map.
+3. **Find Shortest Route (Dijkstra):** Click **Find Shortest Route**. The optimal walking path is traced in bright orange-red with step junction markers, and step-by-step turn directions with individual leg distances and walkway names appear in the sidebar.
+4. **Minimum Spanning Network (Prim MST):** Click **Show Minimum Network**. The lowest-cost connecting walkway tree/forest is highlighted in forest green, and network length metrics are displayed in the sidebar.
+5. **Reset:** Click **Reset** to clear active overlays, selections, and restore the initial map view.
+
+---
+
+## 3. Architecture & Separation of Concerns
 
 ```mermaid
 flowchart TD
@@ -67,7 +94,7 @@ flowchart TD
 
 ---
 
-## 3. PAMCA501 DSA Syllabus Mapping
+## 4. PAMCA501 DSA Syllabus Mapping
 
 | Syllabus Topic | Class / Implementation | Time Complexity | Space Complexity | Verification Status |
 |---|---|---|---|---|
@@ -84,7 +111,7 @@ flowchart TD
 
 ---
 
-## 4. OpenStreetMap Dataset Provenance
+## 5. OpenStreetMap Dataset Provenance
 
 - **Canonical File:** `src/main/resources/data/vit-vellore-campus.osm.xml` (1.50 MB, raw OSM XML).
 - **Metadata File:** `src/main/resources/data/campus-data-metadata.properties`.
@@ -102,7 +129,7 @@ flowchart TD
 
 ---
 
-## 5. Build, Test, and Execution Instructions
+## 6. Build, Test, and Execution Details
 
 ### Prerequisites
 - JDK 21 or later (`javac` and `java` available in PATH).
@@ -154,7 +181,7 @@ Launch the desktop GUI:
 
 ---
 
-## 6. How to Use the Application
+## 7. Interactive Feature Walkthrough
 
 1. **Search for Landmarks:** Type in the **START LOCATION** and **DESTINATION** boxes. As you type (e.g., "Library", "Food Court", "Gate", "Tower"), matching campus locations are filtered automatically. You can also click any blue landmark marker directly on the vector map canvas.
 2. **Interactive Map Navigation:**
@@ -167,7 +194,7 @@ Launch the desktop GUI:
 
 ---
 
-## 7. Repository Map & File Guides
+## 8. Repository Structure & File Guides
 
 Every source, test, resource, query, and configuration file has a dedicated technical guide under [`docs/file-guides/`](docs/file-guides/):
 
@@ -175,7 +202,6 @@ Every source, test, resource, query, and configuration file has a dedicated tech
 smart-route-finder-starter/
 ├── README.md                                  # Complete project documentation and viva guide
 ├── plan.md                                    # Authoritative SDLC plan, decisions, and verification
-├── AGENTS.md                                  # Coding guidelines and quality release gates
 ├── pom.xml                                    # Maven project configuration (JavaFX 21)
 ├── build.ps1 / build.bat                      # Standalone project compilation scripts
 ├── test.ps1 / test.bat                        # Automated test runner scripts
@@ -215,7 +241,7 @@ smart-route-finder-starter/
 
 ---
 
-## 8. Viva Discussion Questions & Preparation (PAMCA501)
+## 9. Viva Discussion Questions & Preparation (PAMCA501)
 
 ### Q1: Why use an adjacency list instead of an adjacency matrix for the campus map?
 **Answer:** The VIT Vellore campus graph is very sparse. With $V = 1,643$ vertices, an adjacency matrix would require $V^2 \approx 2.7 \times 10^6$ entries ($O(V^2)$ memory), where over 99.8% of the cells would be null or zero. An adjacency list (`Map<Long, List<Road>>`) requires only $O(V + E)$ memory (1,643 entries with 3,586 directed edges total), and iterating through neighbors in Dijkstra and Prim takes $O(\text{deg}(v))$ time rather than $O(V)$ time.

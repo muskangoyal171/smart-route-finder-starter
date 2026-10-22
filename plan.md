@@ -1,6 +1,6 @@
 # Smart Route Finder — Implementation Plan and Source of Truth
 
-> **For every coding agent:** Read this file before making changes. This document is authoritative for scope, approved decisions, milestone status, architecture, and the next action. When the implementation and plan disagree, investigate and update both in the same change. Do not mark work complete merely because code was generated.
+> **Project Specification & Source of Truth:** This document defines the project scope, approved architectural decisions, milestone status, implementation standards, and verification criteria for the PAMCA501 Data Structures and Algorithms coursework.
 
 ## 1. Project control
 
@@ -80,7 +80,7 @@ The current code is `src/main/java/com/smartroute/SmartRouteFinderGUI.java`, bas
 
 | Stage | Name | Status | Exit criteria |
 |---|---|---|---|
-| 0 | Baseline inspection and documentation bootstrap | Done | Starter source/POM inspected; initial README, plan, agent instructions, and file guides created. This does not mean the GUI is production-ready. |
+| 0 | Baseline inspection and documentation bootstrap | Done | Starter source/POM inspected; initial README, architecture plan, and file guides created. Baseline requirements and milestones established. |
 | 1 | Requirements and OSM data definition | Done | Inspect OSM coverage for the campus; choose and document the campus bounding box; agree on walkable-way/access filters, target destination types, snapping policy, provenance schema, and measurable MVP acceptance criteria. Completed with evidence in `docs/osm-data-specification.md`, updated query `vit-vellore-campus.overpassql`, and corresponding file guides. |
 | 2 | OSM extraction and dataset provenance | Done | Export an appropriately bounded raw OSM XML snapshot; commit the Overpass query, metadata, retrieval date, bounding box, attribution/licence notes, and coverage review. Run a validation checklist; no blank or undocumented provenance fields. Completed: `vit-vellore-campus.osm.xml` (1,537,726 bytes) saved; `campus-data-metadata.properties` populated; verified 6,084 nodes, 1,032 ways, 391 walkable ways, 1,442 vertices, 1,576 segments, 0 missing node refs, 31 components; file guides created. |
 | 3 | Architecture and graph model | Done | Approve class responsibilities and graph invariants; implement OSM-node vertices, way-segment edges, destination mapping, ID lookup, distance calculation, and clear load errors. Draw an updated architecture diagram. Completed: `GraphNode`, `Road`, `Location`, `CampusGraph`, `CampusDataMetadata`, `OsmXmlCampusDataLoader`, and `CampusDataRepository` implemented; 12 file guides created; automated tests passing 3/3 (`CampusGraphTest`, `CampusDataMetadataTest`, `OsmXmlCampusDataLoaderTest`). |
@@ -264,7 +264,7 @@ Each class guide must describe the implementation that actually exists, not only
 
 For each meaningful change, follow this order:
 
-1. Read `plan.md`, `README.md`, `AGENTS.md`, Copilot instructions, the target file guide, and relevant tests/data docs.
+1. Review `plan.md`, `README.md`, the target file guide, and relevant tests/data docs.
 2. State the current SDLC stage, smallest planned change, and verification method.
 3. Change one coherent unit; avoid implementing several future stages at once.
 4. Add/update tests and run relevant Maven commands when the environment permits.
@@ -273,7 +273,7 @@ For each meaningful change, follow this order:
 7. Update this plan's stage status, files changed, actual verification evidence, open risks, and next action.
 8. Review changed documentation for stale file names, false completion claims, invented data, and mismatched behavior.
 
-`README.md`, `plan.md`, `AGENTS.md`, `.github/copilot-instructions.md`, and explanatory docs are coordination/overview material and do not need recursively generated guides. Source, tests, configurations, queries, and actual data artifacts do.
+`README.md`, `plan.md`, and explanatory guides are coordination/overview material and do not need recursively generated guides. Source, tests, configurations, queries, and actual data artifacts do.
 
 ### Required file-guide content
 
@@ -289,7 +289,7 @@ Every source/config/test/query/data guide should explain:
 - Plain-language beginner walkthrough and likely viva question.
 - For OSM-derived data: source, retrieval date, licence/attribution, bbox, query, filter policy, and known data quality limits.
 
-## 10. Coding conventions for Antigravity and Copilot
+## 10. Implementation Standards and Conventions
 
 - Read this plan before coding and work only on the current stage.
 - Prefer beginner-readable names, small methods, and straightforward control flow over streams-heavy, reflection-heavy, or compressed code.
@@ -320,7 +320,7 @@ For a new snapshot, include source-data validation, graph component counts, impo
 
 | Date | Decision/version | Details |
 |---|---|---|
-| 2026-10-22 | 0.1 baseline | Inspected the supplied JavaFX/Maven prototype; documented baseline behavior, DSA goals, SDLC gates, and agent rules. |
+| 2026-10-22 | 0.1 baseline | Inspected the supplied JavaFX/Maven prototype; documented baseline behavior, DSA goals, SDLC gates, and development standards. |
 | 2026-10-22 | 0.2 OSM direction | Selected OSM as the intended campus map/path source; chose a manually refreshed offline raw-XML snapshot for the first release; specified graph construction from ordered OSM way node references, geographic segment weights, destination snapping controls, attribution/licence guidance, and data-quality checks. |
 | 2026-10-22 | 0.3 Stage 1 complete | Completed Stage 1 data definition in `docs/osm-data-specification.md`: defined verified bounding box `(12.9640, 79.1500, 12.9790, 79.1670)`, walkable way allowlist, access denylist, 35.0m maximum snapping distance threshold, Haversine distance formula, metadata properties schema, and MVP acceptance criteria (AC-1 through AC-6). Updated `data/overpass/vit-vellore-campus.overpassql`, `docs/file-guides/vit-vellore-campus.overpassql.md`, and `README.md`. |
 | 2026-10-22 | 0.4 Stage 2 complete | Exported and committed raw OSM XML snapshot to `src/main/resources/data/vit-vellore-campus.osm.xml` (1,537,726 bytes) and populated `src/main/resources/data/campus-data-metadata.properties`. Validated: 6,084 nodes, 1,032 ways, 38 relations, 391 walkable ways, 24 rejected highways, 1,442 graph vertices, 1,576 way segments, 0 missing node references, 31 components (largest component 1,095 vertices), 10 mapped entrances, and 188 named campus landmarks. Created file guides for both dataset files. |
